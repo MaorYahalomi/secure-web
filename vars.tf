@@ -1,13 +1,13 @@
 variable "AWS_ACCESS_KEY" {
-    default = "xx"
+  default = "xx"
 }
 
 variable "AWS_SECRET_KEY" {
-    default = "xx"
+  default = "xx"
 }
 
 variable "instance_type" {
-    default = "t2.micro"
+  default = "t2.micro"
 }
 
 variable "AWS_REGION" {
