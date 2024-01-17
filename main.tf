@@ -87,7 +87,7 @@ resource "aws_instance" "server" {
     Name = "web_instance"
   }
 }
-
+#add new comment
 #### Create tls web server instance and assume the role ####
 resource "aws_instance" "server_tls" {
   ami                    = data.aws_ami.amazon-linux-2.id
