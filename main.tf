@@ -99,7 +99,7 @@ resource "aws_instance" "server_tls" {
     systemctl start httpd.service
     systemctl enable httpd.service
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/httpd/conf.d/selfsigned.key -out /etc/httpd/conf.d/selfsigned.crt -subj "/C=US/ST=State/L=City/O=Organization/CN=localhost"
-    echo “Hello World from $(hostname -f)” > /var/www/html/index.html
+    aws s3 cp s3://image-demo-web/index.html /var/www/html/index.html
     chmod o+w /etc/httpd/conf.d/ssl.conf
     chmod o+w /etc/httpd/conf/httpd.conf
     cat <<EOF_CONFIG > /etc/httpd/conf.d/ssl.conf
