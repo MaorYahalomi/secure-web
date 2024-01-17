@@ -1,19 +1,22 @@
-
+### Create IAM role ####
 resource "aws_iam_role" "web_server_role" {
   name               = "ec2-web-server-role"
   assume_role_policy = file("assumerolepolicy.json")
 }
 
+### Create IAM role Policy ####
 data "aws_iam_policy" "s3_read_policy" {
   arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
 }
 
+### Attach IAM Policy to role ####
 resource "aws_iam_policy_attachment" "s3-policy-attached" {
   name       = "s3-Policy"
   roles      = ["${aws_iam_role.web_server_role.name}"]
   policy_arn = data.aws_iam_policy.s3_read_policy.arn
 }
 
+### Create Instance profile ####
 resource "aws_iam_instance_profile" "ec2-profile" {
   name = "ec2-profile"
   role = aws_iam_role.web_server_role.name
@@ -66,7 +69,7 @@ data "aws_ami" "amazon-linux-2" {
   owners = ["amazon"]
 }
 
-### Create instance assume the role, and install Cloudwatch Agent ####
+### Create web-app instance and assume the role ####
 resource "aws_instance" "server" {
   ami                    = data.aws_ami.amazon-linux-2.id
   instance_type          = var.instance_type
@@ -85,8 +88,7 @@ resource "aws_instance" "server" {
   }
 }
 
-
-#### Create tls web server instance with tls IAM policy ####
+#### Create tls web server instance and assume the role ####
 resource "aws_instance" "server_tls" {
   ami                    = data.aws_ami.amazon-linux-2.id
   instance_type          = var.instance_type
